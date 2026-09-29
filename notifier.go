@@ -2,11 +2,15 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"net/smtp"
 	"strings"
 	"time"
 )
+
+// Developed by: Ahmed Wael
 
 func SendNotification(cfg *Config, newPrograms []Program) error {
 	if len(newPrograms) == 0 {
@@ -48,7 +52,7 @@ func SendNotification(cfg *Config, newPrograms []Program) error {
 
 	body.WriteString(`
 			</ul>
-			<p style="font-size: 0.9em; color: #7f8c8d; margin-top: 20px;">Automated via Go BBRadar Monitor</p>
+			<p style="font-size: 0.9em; color: #7f8c8d; margin-top: 20px;">Automated via Go BBRadar Monitor | Developer: Ahmed Wael</p>
 		</body>
 		</html>
 	`)
@@ -56,4 +60,31 @@ func SendNotification(cfg *Config, newPrograms []Program) error {
 	addr := fmt.Sprintf("%s:%s", cfg.SMTPHost, cfg.SMTPPort)
 	err := smtp.SendMail(addr, auth, cfg.SMTPUser, []string{cfg.NotifyEmail}, body.Bytes())
 	return err
+}
+
+func SendTelegramMessage(cfg *Config, message string) error {
+	apiURL := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", cfg.TelegramToken)
+
+	payload := map[string]string{
+		"chat_id":    cfg.TelegramChatID,
+		"text":       message,
+		"parse_mode": "HTML",
+	}
+
+	jsonPayload, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+
+	resp, err := http.Post(apiURL, "application/json", bytes.NewBuffer(jsonPayload))
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		return fmt.Errorf("telegram API returned status: %d", resp.StatusCode)
+	}
+
+	return nil
 }
