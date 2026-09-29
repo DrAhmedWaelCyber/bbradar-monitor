@@ -27,7 +27,8 @@
 | `SMTP_PASS` | Your Email App Password (no spaces) |
 | `NOTIFY_EMAIL` | The email address to receive alerts |
 | `TELEGRAM_BOT_TOKEN` | Your Telegram Bot Token from BotFather |
-| `TELEGRAM_CHAT_ID` | Your personal Telegram Chat ID (or Channel ID) |
+| `TELEGRAM_CHAT_ID` | Your personal Telegram Chat ID |
+| `TELEGRAM_CHAT_ID_2` | (Optional) A second Telegram Chat ID to receive the same alerts |
 
 ### 🔑 Important: Grant Write Permissions
 To prevent the script from sending you the same programs repeatedly, it saves its state to `state.json` and pushes it back to GitHub.

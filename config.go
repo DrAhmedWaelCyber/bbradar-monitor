@@ -14,6 +14,7 @@ type Config struct {
 	NotifyEmail      string
 	TelegramToken    string
 	TelegramChatID   string
+	TelegramChatID2  string // Optional second user
 }
 
 func LoadConfig() (*Config, error) {
@@ -25,6 +26,7 @@ func LoadConfig() (*Config, error) {
 		NotifyEmail:      os.Getenv("NOTIFY_EMAIL"),
 		TelegramToken:    os.Getenv("TELEGRAM_BOT_TOKEN"),
 		TelegramChatID:   os.Getenv("TELEGRAM_CHAT_ID"),
+		TelegramChatID2:  os.Getenv("TELEGRAM_CHAT_ID_2"),
 	}
 
 	if cfg.SMTPHost == "" || cfg.SMTPPort == "" || cfg.SMTPUser == "" || cfg.SMTPPass == "" || cfg.NotifyEmail == "" {

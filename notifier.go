@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/smtp"
 	"strings"
@@ -62,11 +63,14 @@ func SendNotification(cfg *Config, newPrograms []Program) error {
 	return err
 }
 
-func SendTelegramMessage(cfg *Config, message string) error {
+func sendTelegramMessage(cfg *Config, message string, chatID string) error {
+	if chatID == "" {
+		return nil
+	}
 	apiURL := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", cfg.TelegramToken)
 
 	payload := map[string]string{
-		"chat_id":    cfg.TelegramChatID,
+		"chat_id":    chatID,
 		"text":       message,
 		"parse_mode": "HTML",
 	}
@@ -87,4 +91,17 @@ func SendTelegramMessage(cfg *Config, message string) error {
 	}
 
 	return nil
+}
+
+// BroadcastTelegramMessage sends the message to all configured chat IDs.
+func BroadcastTelegramMessage(cfg *Config, message string) {
+	if err := sendTelegramMessage(cfg, message, cfg.TelegramChatID); err != nil {
+		log.Printf("Telegram Error (Chat 1): %v", err)
+	}
+	
+	if cfg.TelegramChatID2 != "" {
+		if err := sendTelegramMessage(cfg, message, cfg.TelegramChatID2); err != nil {
+			log.Printf("Telegram Error (Chat 2): %v", err)
+		}
+	}
 }

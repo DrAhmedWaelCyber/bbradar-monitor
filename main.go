@@ -55,12 +55,8 @@ func main() {
 		}
 		tgMsg.WriteString(fmt.Sprintf("🕒 <i>Checked at: %s</i>\n👨‍💻 <i>Dev: Ahmed Wael</i>", time.Now().Format("15:04:05")))
 		
-		err = SendTelegramMessage(cfg, tgMsg.String())
-		if err != nil {
-			log.Printf("Telegram Notification Error: %v", err)
-		} else {
-			log.Println("Telegram notification sent successfully.")
-		}
+		BroadcastTelegramMessage(cfg, tgMsg.String())
+		log.Println("Telegram notifications broadcasted.")
 
 		// 3. Save State
 		err = SaveState(state)
@@ -74,9 +70,6 @@ func main() {
 		
 		// Send "No new programs" heartbeat every 5 minutes as requested
 		heartbeatMsg := fmt.Sprintf("✅ <b>BBRadar Monitor (Alive)</b>\n\n🔍 Checked at: <i>%s</i>\n⚠️ No new programs found in this cycle.\n👨‍💻 <i>Dev: Ahmed Wael</i>", time.Now().Format("15:04:05"))
-		err = SendTelegramMessage(cfg, heartbeatMsg)
-		if err != nil {
-			log.Printf("Telegram Heartbeat Error: %v", err)
-		}
+		BroadcastTelegramMessage(cfg, heartbeatMsg)
 	}
 }
