@@ -49,11 +49,16 @@ func main() {
 
 		// 2. Formulate & Send Telegram Notification
 		var tgMsg strings.Builder
-		tgMsg.WriteString(fmt.Sprintf("🚨 <b>New Bug Bounty Programs Detected! (%d)</b>\n\n", len(newPrograms)))
+		tgMsg.WriteString(fmt.Sprintf("🚨 <b>NEW BUG BOUNTY PROGRAMS DETECTED!</b> 🚨\n━━━━━━━━━━━━━━━━━━━━\n🔥 <b>Programs Found:</b> %d\n\n", len(newPrograms)))
 		for _, p := range newPrograms {
-			tgMsg.WriteString(fmt.Sprintf("🔹 <b>%s</b>\n🔗 <a href='%s'>Program Link</a>\n\n", p.Name, p.URL))
+			parts := strings.Split(p.Identifier, ":")
+			platform := "Unknown"
+			if len(parts) > 0 {
+				platform = parts[0]
+			}
+			tgMsg.WriteString(fmt.Sprintf("🎯 <b>%s</b> <i>(%s)</i>\n🔗 <a href=\"%s\">View Scope & Details</a>\n\n", p.Name, platform, p.URL))
 		}
-		tgMsg.WriteString(fmt.Sprintf("🕒 <i>Checked at: %s</i>\n👨‍💻 <i>Dev: Ahmed Wael</i>", time.Now().Format("15:04:05")))
+		tgMsg.WriteString(fmt.Sprintf("━━━━━━━━━━━━━━━━━━━━\n⏱ <b>Time:</b> <i>%s</i>\n👨‍💻 <b>Developed by: Ahmed Wael</b>", time.Now().Format("2006-01-02 15:04:05")))
 		
 		BroadcastTelegramMessage(cfg, tgMsg.String())
 		log.Println("Telegram notifications broadcasted.")
@@ -69,7 +74,7 @@ func main() {
 		log.Println("No new programs found. Sending heartbeat to Telegram...")
 		
 		// Send "No new programs" heartbeat every 5 minutes as requested
-		heartbeatMsg := fmt.Sprintf("✅ <b>BBRadar Monitor (Alive)</b>\n\n🔍 Checked at: <i>%s</i>\n⚠️ No new programs found in this cycle.\n👨‍💻 <i>Dev: Ahmed Wael</i>", time.Now().Format("15:04:05"))
+		heartbeatMsg := fmt.Sprintf("🟢 <b>BBRadar Monitor Status</b> 🟢\n━━━━━━━━━━━━━━━━━━━━\n📡 <b>Status:</b> Active & Hunting\n🔍 <b>Last Checked:</b> %s\n⚠️ <b>Result:</b> No new programs in this cycle.\n\n<i>Stay ready! 🎯</i>\n━━━━━━━━━━━━━━━━━━━━\n👨‍💻 <b>Developed by: Ahmed Wael</b>", time.Now().Format("2006-01-02 15:04:05"))
 		BroadcastTelegramMessage(cfg, heartbeatMsg)
 	}
 }
