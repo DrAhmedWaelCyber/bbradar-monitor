@@ -1,47 +1,62 @@
-# 🚀 BBRadar Monitor
+<div align="center">
+  <h1>🚀 BBRadar Monitor</h1>
+  <p><b>An ultra-fast, automated Bug Bounty Reconnaissance Tool to monitor new programs.</b></p>
+  
+  [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go)](https://golang.org/)
+  [![GitHub Actions](https://img.shields.io/badge/Automated-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions)](https://github.com/features/actions)
+  [![Telegram](https://img.shields.io/badge/Alerts-Telegram-2CA5E0?style=for-the-badge&logo=telegram)](https://telegram.org/)
+  
+  <h3>👨‍💻 Developed by: <b>Ahmed Wael</b></h3>
+</div>
 
-**BBRadar Monitor** is a highly-efficient, automated Go tool that actively monitors [bbradar.io](https://bbradar.io/) for newly published bug bounty programs. When new programs are detected, it instantly sends an HTML Email and a Telegram notification directly to your device!
+<hr>
 
-> 👨‍💻 **Developed by:** Ahmed Wael
+## 🎯 Overview
+**BBRadar Monitor** is a highly efficient Go-based automation tool designed for Bug Bounty Hunters. It actively tracks [bbradar.io](https://bbradar.io) to fetch newly launched bug bounty programs (HackerOne, Bugcrowd, YesWeHack, etc.) and delivers **instant notifications** directly to your Email and Telegram.
 
-## ✨ Features
-- **Scrapes Intelligently:** Parses native SEO JSON-LD data instead of brittle HTML structure to ensure stability.
-- **GitHub Actions Automation:** Runs automatically every 5 minutes completely for free.
-- **Stateful Memory:** Remembers programs it has already alerted you about using a `state.json` file.
-- **Multi-Channel Alerts:** 
-  - 📧 Clean, formatted HTML Emails.
-  - 💬 Telegram Bot Notifications.
-  - ⏱️ Heartbeat notifications every 5 minutes via Telegram indicating that the monitor is active and hunting.
+By utilizing raw `JSON-LD` extraction instead of fragile HTML scraping, it guarantees robust and blazing-fast data parsing.
+
+## ✨ Key Features
+- **⚡ Zero-Delay Parsing:** Extracts structured SEO JSON-LD natively.
+- **🤖 Fully Automated:** Pre-configured to run continuously in the background.
+- **🧠 Stateful Memory:** Keeps track of previously alerted programs via `state.json` to prevent duplicate alerts.
+- **📡 Multi-Channel Alerting:** 
+  - 📧 Beautifully formatted HTML Email alerts.
+  - 💬 Instant **Telegram Bot** notifications (Supports multiple users).
+  - ⏱️ Heartbeat status checks to ensure the monitor is alive.
 
 ## ⚙️ Configuration & Setup
 
-1. Fork or Clone this repository as a Private repository.
-2. Go to your repository **Settings** ➡️ **Secrets and variables** ➡️ **Actions**.
-3. Add the following **New repository secrets**:
+To deploy this monitor for your own hunting automation, fork this repository and configure the following in **Settings ➡️ Secrets and variables ➡️ Actions**:
 
-| Secret Name | Description |
-|---|---|
-| `SMTP_HOST` | E.g., `smtp.gmail.com` |
-| `SMTP_PORT` | E.g., `587` |
-| `SMTP_USER` | Your email address |
-| `SMTP_PASS` | Your Email App Password (no spaces) |
-| `NOTIFY_EMAIL` | The email address to receive alerts |
-| `TELEGRAM_BOT_TOKEN` | Your Telegram Bot Token from BotFather |
-| `TELEGRAM_CHAT_ID` | Your personal Telegram Chat ID |
-| `TELEGRAM_CHAT_ID_2` | (Optional) A second Telegram Chat ID to receive the same alerts |
+### 🔐 Environment Secrets
+| Secret Name | Description | Example |
+|---|---|---|
+| `SMTP_HOST` | Your email SMTP server | `smtp.gmail.com` |
+| `SMTP_PORT` | Your SMTP port | `587` |
+| `SMTP_USER` | Your email address | `hunter@gmail.com` |
+| `SMTP_PASS` | Your Email App Password | `appblpkzpegobkjwjgg` *(No spaces)* |
+| `NOTIFY_EMAIL` | The email receiving the alerts | `your.email@gmail.com` |
+| `TELEGRAM_BOT_TOKEN` | Telegram Bot Token | `8693343243:AAF7J...` |
+| `TELEGRAM_CHAT_ID` | Primary Telegram Chat ID | `123456789` |
+| `TELEGRAM_CHAT_ID_2`| *(Optional)* Second Chat ID | `987654321` |
 
-### 🔑 Important: Grant Write Permissions
-To prevent the script from sending you the same programs repeatedly, it saves its state to `state.json` and pushes it back to GitHub.
-1. Go to repository **Settings** ➡️ **Actions** ➡️ **General**.
+### 🛡️ Granting Action Permissions
+Because the tool updates its internal state memory (`state.json`), you must allow GitHub Actions to commit changes:
+1. Go to **Settings** ➡️ **Actions** ➡️ **General**.
 2. Scroll to **Workflow permissions**.
 3. Select **Read and write permissions**.
 4. Click **Save**.
 
-## 🚀 Running the Monitor
-The monitor will start running automatically every 5 minutes. You can also trigger it manually:
-1. Go to the **Actions** tab.
-2. Select **Monitor BBRadar** on the left.
-3. Click **Run workflow**.
+## 🚀 Triggering the Monitor
+Once configured, the tool runs on its configured schedule. You can also instantly trigger it by:
+1. Clicking the **Actions** tab.
+2. Selecting **Monitor BBRadar**.
+3. Clicking **Run workflow**.
 
----
-*Happy Hunting! 🎯*
+<hr>
+
+<div align="center">
+  <i>Happy Hunting! May the bounties be ever in your favor. 🎯💰</i><br>
+  <b>© 2026 Ahmed Wael</b>
+</div>
