@@ -19,13 +19,15 @@ func main() {
 	log.Println("Fetching programs from bbradar.io...")
 	programs, err := FetchPrograms()
 	if err != nil {
-		log.Fatalf("Fetch Error: %v", err)
+		log.Printf("Fetch Error (Temporary): %v", err)
+		return // Exit cleanly so GitHub doesn't penalize the cron schedule
 	}
 	log.Printf("Fetched %d programs.", len(programs))
 
 	state, err := LoadState()
 	if err != nil {
-		log.Fatalf("State Load Error: %v", err)
+		log.Printf("State Load Error: %v", err)
+		return
 	}
 
 	var newPrograms []Program
@@ -66,9 +68,10 @@ func main() {
 		// 3. Save State
 		err = SaveState(state)
 		if err != nil {
-			log.Fatalf("State Save Error: %v", err)
+			log.Printf("State Save Error (Non-fatal): %v", err)
+		} else {
+			log.Println("State updated successfully.")
 		}
-		log.Println("State updated successfully.")
 		
 	} else {
 		log.Println("No new programs found. Sending heartbeat to Telegram...")
